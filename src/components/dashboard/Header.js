@@ -32,6 +32,7 @@ export function Header({ onMenuClick }) {
               <Button variant="ghost" size="sm" className="flex items-center space-x-2">
                 <User className="h-5 w-5" />
                 {user && <span className="hidden md:inline">{user.name}</span>}
+                }
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
