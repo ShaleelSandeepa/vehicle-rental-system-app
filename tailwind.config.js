@@ -1,49 +1,56 @@
 /** @type {import('tailwindcss').Config} */
-const defaultConfig = require("shadcn/ui/tailwind.config")
-
 module.exports = {
-  ...defaultConfig,
-  content: ["./src/**/*.{js,jsx,ts,tsx}", "*.{js,ts,jsx,tsx,mdx}"],
+  content: [
+    "./src/**/*.{js,jsx,ts,tsx}",
+    "./public/index.html"
+  ],
   theme: {
-    ...defaultConfig.theme,
     extend: {
-      ...defaultConfig.theme.extend,
       colors: {
-        ...defaultConfig.theme.extend.colors,
+        border: "hsl(var(--border))",
+        input: "hsl(var(--input))",
+        ring: "hsl(var(--ring))",
+        background: "hsl(var(--background))",
+        foreground: "hsl(var(--foreground))",
         primary: {
-          ...defaultConfig.theme.extend.colors.primary,
           DEFAULT: "#10b981",
-          dark: "#059669",
-          light: "#34d399",
+          foreground: "#ffffff",
         },
         secondary: {
-          ...defaultConfig.theme.extend.colors.secondary,
-          DEFAULT: "#6b7280",
+          DEFAULT: "#f3f4f6",
+          foreground: "#1f2937",
+        },
+        destructive: {
+          DEFAULT: "#ef4444",
+          foreground: "#ffffff",
+        },
+        muted: {
+          DEFAULT: "#f9fafb",
+          foreground: "#6b7280",
         },
         accent: {
-          ...defaultConfig.theme.extend.colors.accent,
-          DEFAULT: "#f59e0b",
+          DEFAULT: "#f3f4f6",
+          foreground: "#1f2937",
         },
-        background: "#ffffff",
-        surface: "#f9fafb",
-        text: {
-          DEFAULT: "#111827",
-          secondary: "#6b7280",
+        popover: {
+          DEFAULT: "#ffffff",
+          foreground: "#1f2937",
         },
-        error: "#ef4444",
-        success: "#10b981",
-        warning: "#f59e0b",
-      },
-      fontFamily: {
-        heading: ["Playfair Display", "serif"],
-        body: ["Source Sans Pro", "sans-serif"],
+        card: {
+          DEFAULT: "#ffffff",
+          foreground: "#1f2937",
+        },
       },
       borderRadius: {
         lg: "var(--radius)",
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
       },
+      fontFamily: {
+        serif: ['Playfair Display', 'serif'],
+        sans: ['Inter', 'system-ui', 'sans-serif'],
+      },
     },
   },
-  plugins: [...defaultConfig.plugins, require("tailwindcss-animate")],
+  plugins: [require('tailwindcss-animate')],
 }

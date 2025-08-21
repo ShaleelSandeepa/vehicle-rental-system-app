@@ -1,60 +1,44 @@
-"use client"
+import React, { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { Button } from '../components/ui/button';
+import { Input } from '../components/ui/input';
+import { Label } from '../components/ui/label';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/card';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../components/ui/select';
+import { useAuth } from '../contexts/AuthContext';
 
-import type React from "react"
-
-import { useState } from "react"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Alert, AlertDescription } from "@/components/ui/alert"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import Link from "next/link"
-import { useRouter } from "next/navigation"
-
-export default function RegisterPage() {
+export function Register() {
   const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    password: "",
-    confirmPassword: "",
-    role: "customer",
-  })
-  const [error, setError] = useState("")
-  const [isLoading, setIsLoading] = useState(false)
-  const router = useRouter()
+    name: '',
+    email: '',
+    password: '',
+    confirmPassword: '',
+    role: 'customer',
+  });
+  const [error, setError] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const { register } = useAuth();
+  const navigate = useNavigate();
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setIsLoading(true)
-    setError("")
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setIsLoading(true);
+    setError('');
 
     if (formData.password !== formData.confirmPassword) {
-      setError("Passwords do not match")
-      setIsLoading(false)
-      return
+      setError('Passwords do not match');
+      setIsLoading(false);
+      return;
     }
 
-    // Simulate API call
-    setTimeout(() => {
-      if (formData.name && formData.email && formData.password) {
-        // Store user data in localStorage (in real app, use proper auth)
-        localStorage.setItem(
-          "user",
-          JSON.stringify({
-            id: Date.now(),
-            email: formData.email,
-            name: formData.name,
-            role: formData.role,
-          }),
-        )
-        router.push("/")
-      } else {
-        setError("Please fill in all fields")
-      }
-      setIsLoading(false)
-    }, 1000)
-  }
+    const success = await register(formData.name, formData.email, formData.password, formData.role);
+    if (success) {
+      navigate('/');
+    } else {
+      setError('Please fill in all fields');
+    }
+    setIsLoading(false);
+  };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-emerald-50 to-teal-50 p-4">
@@ -66,9 +50,9 @@ export default function RegisterPage() {
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-4">
             {error && (
-              <Alert variant="destructive">
-                <AlertDescription>{error}</AlertDescription>
-              </Alert>
+              <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded">
+                {error}
+              </div>
             )}
 
             <div className="space-y-2">
@@ -136,13 +120,13 @@ export default function RegisterPage() {
               />
             </div>
 
-            <Button type="submit" className="w-full bg-emerald-600 hover:bg-emerald-700" disabled={isLoading}>
-              {isLoading ? "Creating Account..." : "Create Account"}
+            <Button type="submit" className="w-full" disabled={isLoading}>
+              {isLoading ? 'Creating Account...' : 'Create Account'}
             </Button>
 
             <div className="text-center text-sm">
               <span className="text-gray-600">Already have an account? </span>
-              <Link href="/login" className="text-emerald-600 hover:text-emerald-700 font-medium">
+              <Link to="/login" className="text-emerald-600 hover:text-emerald-700 font-medium">
                 Sign in
               </Link>
             </div>
@@ -150,5 +134,5 @@ export default function RegisterPage() {
         </CardContent>
       </Card>
     </div>
-  )
+  );
 }
